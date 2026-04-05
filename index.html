@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YRB Leads</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f8f9fb;--surface:#fff;--border:#e0e8f0;--border2:#d4dce8;
+  --text:#0f1419;--text2:#4a5568;--text3:#8892a6;--text4:#c0c5cf;
+  --accent:#4f46e5;--accent-hover:#4338ca;--accent-light:#ede9fe;--accent-text:#fff;
+  --card-bg:#fff;--sidebar-bg:#fff;
+  --no-web-bg:#fef2f2;--no-web-color:#dc2626;--no-web-border:#fecaca;
+  --has-web-bg:#f0fdf4;--has-web-color:#166534;--has-web-border:#bbf7d0;
+  --badge-bg:#ede9fe;--badge-color:#6d28d9;--badge-border:#c4b5fd;
+  --call-bg:#eff6ff;--call-color:#1d4ed8;--call-border:#bfdbfe;
+  --input-bg:#fff;--prog-bg:#e0e8f0;
+  --sugg-bg:#fff;--sugg-hover:#f1f5f9;
+  --overlay-bg:rgba(248,249,251,0.95);
+  --shadow-sm:0 1px 3px rgba(15,23,42,0.06),0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md:0 4px 12px rgba(15,23,42,0.08),0 2px 4px rgba(15,23,42,0.04);
+  --shadow-lg:0 12px 24px rgba(15,23,42,0.1),0 4px 8px rgba(15,23,42,0.05);
+  --shadow-xl:0 20px 40px rgba(15,23,42,0.12),0 8px 16px rgba(15,23,42,0.06);
+  --glow:none;--glow-strong:none;--glow-accent:none;
+  --cursor-color:#4f46e5;
+}
+body.dark{
+  --bg:#0a0e14;--surface:#141b27;--border:#1e2a3a;--border2:#2a3a4e;
+  --text:#f1f5f9;--text2:#cbd5e1;--text3:#7a8ba3;--text4:#3a4a5e;
+  --accent:#6366f1;--accent-hover:#818cf8;--accent-light:#1e1b4b;--accent-text:#fff;
+  --card-bg:#141b27;--sidebar-bg:#0d1219;
+  --no-web-bg:rgba(220,38,38,0.08);--no-web-color:#f87171;--no-web-border:rgba(220,38,38,0.2);
+  --has-web-bg:rgba(34,197,94,0.08);--has-web-color:#4ade80;--has-web-border:rgba(34,197,94,0.2);
+  --badge-bg:rgba(99,102,241,0.15);--badge-color:#a5b4fc;--badge-border:rgba(99,102,241,0.3);
+  --call-bg:rgba(59,130,246,0.1);--call-color:#93c5fd;--call-border:rgba(59,130,246,0.2);
+  --input-bg:#0f1520;--prog-bg:#1e2a3a;
+  --sugg-bg:#141b27;--sugg-hover:#1a2332;
+  --overlay-bg:rgba(10,14,20,0.95);
+  --glow:0 0 15px rgba(99,102,241,0.08);
+  --glow-strong:0 0 30px rgba(99,102,241,0.15);
+  --glow-accent:0 0 20px rgba(99,102,241,0.25);
+  --cursor-color:#818cf8;
+}
+
+/* ===== CUSTOM CURSOR ===== */
+body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='3' fill='%234f46e5' opacity='0.9'/%3E%3Ccircle cx='10' cy='10' r='8' stroke='%234f46e5' stroke-width='1.5' fill='none' opacity='0.4'/%3E%3C/svg%3E") 10 10, auto;}
+body.dark{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='3' fill='%23818cf8' opacity='0.9'/%3E%3Ccircle cx='10' cy='10' r='8' stroke='%23818cf8' stroke-width='1.5' fill='none' opacity='0.4'/%3E%3C/svg%3E") 10 10, auto;}
+a,button,.ftag,.sc,.num-btn,.sugg-item,.abtn,.exp-btn,.dark-btn,.go-btn{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%234f46e5' opacity='0.8'/%3E%3Ccircle cx='12' cy='12' r='10' stroke='%234f46e5' stroke-width='1.5' fill='none' opacity='0.3'/%3E%3C/svg%3E") 12 12, pointer;}
+body.dark a,body.dark button,body.dark .ftag,body.dark .sc,body.dark .num-btn,body.dark .sugg-item,body.dark .abtn,body.dark .exp-btn,body.dark .dark-btn,body.dark .go-btn{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='5' fill='%23818cf8' opacity='0.8'/%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23818cf8' stroke-width='1.5' fill='none' opacity='0.3'/%3E%3C/svg%3E") 12 12, pointer;}
+
+/* ===== GLOBAL SCROLLBAR ===== */
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-track{background:var(--bg);border-radius:10px;}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg, var(--accent), var(--accent-hover));border-radius:10px;border:2px solid var(--bg);}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, var(--accent-hover), var(--accent));border:1px solid var(--bg);}
+::-webkit-scrollbar-corner{background:var(--bg);}
+*{scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg);}
+
+::selection{background:var(--accent);color:var(--accent-text);}
+input::placeholder{color:var(--text3);font-weight:500;opacity:0.7;}
+
+body{font-family:'Segoe UI','Inter',-apple-system,BlinkMacSystemFont,'Roboto','Helvetica',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.4s,color 0.4s;line-height:1.5;overflow:hidden;}
+
+/* ===== SPLASH / LOGIN SCREEN ===== */
+#splash{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;background:#0a0e14;transition:opacity 0.6s,visibility 0.6s;overflow:hidden;}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.splash-bg{position:absolute;inset:0;overflow:hidden;}
+.splash-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite;}
+.splash-orb.o1{width:400px;height:400px;background:rgba(79,70,229,0.3);top:-10%;left:10%;animation-delay:0s;}
+.splash-orb.o2{width:350px;height:350px;background:rgba(99,102,241,0.2);bottom:-5%;right:5%;animation-delay:2s;}
+.splash-orb.o3{width:250px;height:250px;background:rgba(129,140,248,0.15);top:40%;left:60%;animation-delay:4s;}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.05);}66%{transform:translate(-20px,15px) scale(0.95);};}
+
+.splash-content{position:relative;z-index:2;text-align:center;animation:splashIn 1s ease both;}
+@keyframes splashIn{from{opacity:0;transform:translateY(30px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+.splash-logo{display:inline-flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);box-shadow:0 0 40px rgba(99,102,241,0.4),0 0 80px rgba(99,102,241,0.2);margin-bottom:32px;animation:logoPulse 3s ease-in-out infinite;}
+@keyframes logoPulse{0%,100%{box-shadow:0 0 40px rgba(99,102,241,0.4),0 0 80px rgba(99,102,241,0.2);}50%{box-shadow:0 0 60px rgba(99,102,241,0.6),0 0 100px rgba(99,102,241,0.3);}}
+.splash-logo svg{width:40px;height:40px;}
+
+.splash-title{font-size:42px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.2;margin-bottom:8px;text-shadow:0 2px 20px rgba(99,102,241,0.4);}
+.splash-title span{background:linear-gradient(135deg,#818cf8,#c4b5fd,#e0e7ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.splash-sub{font-size:16px;color:#7a8ba3;font-weight:500;margin-bottom:48px;letter-spacing:0.3px;}
+
+.splash-loader{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.splash-bar-track{width:240px;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;position:relative;}
+.splash-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#4f46e5,#818cf8,#c4b5fd);border-radius:4px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 16px rgba(99,102,241,0.5);}
+.splash-status{font-size:13px;color:#4a5a6e;font-weight:500;transition:all 0.3s;min-height:20px;}
+
+.splash-particles{position:absolute;inset:0;z-index:1;overflow:hidden;}
+.spark{position:absolute;width:2px;height:2px;background:#818cf8;border-radius:50%;animation:sparkle linear infinite;}
+@keyframes sparkle{0%{opacity:0;transform:translateY(0);}10%{opacity:1;}90%{opacity:1;}100%{opacity:0;transform:translateY(-100vh);}}
+
+/* ===== APP ===== */
+#app{display:none;opacity:0;transition:opacity 0.5s;}
+#app.show{display:block;opacity:1;}
+
+/* ===== HEADER ===== */
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:10;transition:all 0.3s;box-shadow:var(--shadow-sm),var(--glow);backdrop-filter:blur(16px);}
+body:not(.dark) .header{background:rgba(255,255,255,0.88);}
+body.dark .header{background:rgba(13,18,25,0.9);box-shadow:0 1px 0 var(--border),var(--glow);}
+
+.header-logo{display:flex;align-items:center;gap:12px;}
+.header-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-hover));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(79,70,229,0.3);transition:all 0.3s;}
+.header-icon:hover{transform:rotate(-5deg) scale(1.05);}
+.header-icon svg{width:20px;height:20px;}
+.header h1{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent-hover));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px;}
+.header h1 small{font-size:11px;font-weight:600;-webkit-text-fill-color:var(--text3);margin-left:6px;letter-spacing:1px;text-transform:uppercase;}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.header-sub{font-size:12px;color:var(--text3);font-weight:600;padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;letter-spacing:0.3px;}
+.dark-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:8px;font-size:13px;font-weight:500;color:var(--text2);transition:all 0.25s;display:flex;align-items:center;gap:6px;width:38px;height:38px;justify-content:center;overflow:hidden;}
+.dark-btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.dark-btn svg{width:18px;height:18px;flex-shrink:0;}
+
+/* ===== LAYOUT ===== */
+.layout{display:flex;height:calc(100vh - 62px);}
+.sidebar{width:320px;min-width:320px;background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;transition:all 0.3s;box-shadow:var(--glow);}
+body.dark .sidebar{background:var(--sidebar-bg);}
+
+label{display:block;font-size:10px;font-weight:800;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1.2px;}
+input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;color:var(--text);background:var(--input-bg);outline:none;transition:all 0.25s;font-weight:500;}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(79,70,229,0.1),var(--glow-accent);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+.num-stepper{display:flex;align-items:stretch;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:var(--input-bg);transition:all 0.25s;}
+.num-stepper:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(79,70,229,0.1),var(--glow-accent);}
+.num-stepper input{border:none;border-radius:0;text-align:center;padding:10px 2px;font-size:16px;font-weight:700;-moz-appearance:textfield;background:transparent;width:100%;}
+.num-stepper input::-webkit-outer-spin-button,.num-stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.num-stepper input:focus{box-shadow:none;}
+.num-btn{display:flex;align-items:center;justify-content:center;width:38px;min-width:38px;padding:0;border:none;background:transparent;color:var(--text3);font-size:18px;font-weight:700;transition:all 0.2s;user-select:none;}
+.num-btn:hover{background:var(--accent);color:var(--accent-text);}
+.num-btn:active{transform:scale(0.9);}
+.num-btn.minus{border-right:1.5px solid var(--border);}
+.num-btn.plus{border-left:1.5px solid var(--border);}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0;}
+
+.ftags{display:flex;gap:6px;flex-wrap:wrap;}
+.ftag{padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;background:transparent;color:var(--text3);transition:all 0.2s;}
+.ftag:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px);}
+.ftag.on{background:linear-gradient(135deg,var(--accent),var(--accent-hover));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(79,70,229,0.25);text-shadow:0 1px 2px rgba(0,0,0,0.15);}
+
+.go-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent-hover));color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;transition:all 0.3s;box-shadow:0 4px 16px rgba(79,70,229,0.3);letter-spacing:0.5px;position:relative;overflow:hidden;}
+.go-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);opacity:0;transition:opacity 0.3s;}
+.go-btn:hover::before{opacity:1;}
+.go-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(79,70,229,0.4);}
+.go-btn:disabled{opacity:0.4;transform:none;box-shadow:none;}
+.go-btn:active:not(:disabled){transform:translateY(0);box-shadow:0 2px 8px rgba(79,70,229,0.3);}
+.prog-wrap{display:none;}
+.prog-bar{height:3px;background:var(--prog-bg);border-radius:3px;overflow:hidden;margin-top:10px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-hover),#c4b5fd);border-radius:3px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 12px rgba(99,102,241,0.4);animation:progShimmer 2s ease-in-out infinite;}
+@keyframes progShimmer{0%,100%{filter:brightness(1);}50%{filter:brightness(1.2);}}
+.prog-txt{font-size:11px;color:var(--text3);margin-top:6px;font-weight:600;}
+
+.iw{position:relative;}
+.sugg-box{display:none;position:absolute;top:100%;left:0;right:0;background:var(--sugg-bg);border:1.5px solid var(--border);border-top:none;border-radius:0 0 10px 10px;z-index:99;max-height:220px;overflow-y:auto;box-shadow:var(--shadow-lg);}
+.sugg-item{padding:10px 14px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border);transition:all 0.15s;font-weight:500;}
+.sugg-item:hover,.sugg-item:focus{background:var(--sugg-hover);padding-left:20px;color:var(--accent);}
+
+/* ===== CONTENT ===== */
+.content{flex:1;padding:28px 32px;overflow-y:auto;position:relative;background:var(--bg);}
+
+.loading-overlay{display:none;position:absolute;inset:0;background:var(--overlay-bg);z-index:20;align-items:center;justify-content:center;flex-direction:column;gap:20px;backdrop-filter:blur(10px);}
+.loading-overlay.show{display:flex;}
+.spinner{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;box-shadow:var(--glow-accent);}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.loading-msg{font-size:15px;font-weight:700;color:var(--text);text-align:center;}
+.loading-sub{font-size:12px;color:var(--text3);font-weight:500;}
+
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1.5px solid var(--border);}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:all 0.3s;}
+.dot.scanning{background:#f59e0b;animation:dotPulse 1.2s ease-in-out infinite;box-shadow:0 0 10px rgba(245,158,11,0.5);}
+.dot.done{background:#10b981;box-shadow:0 0 10px rgba(16,185,129,0.5);}
+.dot.err{background:#ef4444;box-shadow:0 0 10px rgba(239,68,68,0.5);}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.4);opacity:0.6;}}
+.status-txt{font-size:13px;font-weight:600;color:var(--text2);}
+.tr{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.badge{font-size:11px;background:var(--badge-bg);color:var(--badge-color);border:1.5px solid var(--badge-border);padding:4px 12px;border-radius:20px;display:none;font-weight:700;box-shadow:var(--glow);}
+.exp-btn{padding:7px 14px;font-size:11px;border:1.5px solid var(--border);border-radius:8px;background:transparent;color:var(--accent);display:none;font-weight:700;transition:all 0.25s;}
+.exp-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 16px rgba(79,70,229,0.25);transform:translateY(-1px);}
+
+.sort-row{display:none;gap:6px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.sort-row>span:first-child{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-right:4px;}
+.sc{padding:5px 12px;font-size:12px;border:1.5px solid transparent;border-radius:6px;color:var(--text3);background:transparent;transition:all 0.2s;font-weight:600;}
+.sc:hover{color:var(--accent);background:var(--accent-light);}
+.sc.on{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(79,70,229,0.2);}
+
+/* ===== CARDS ===== */
+.cards{display:grid;gap:12px;}
+.card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:16px 18px;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);box-shadow:var(--shadow-sm),var(--glow);position:relative;overflow:hidden;animation:fadeSlideIn 0.35s ease both;}
+.card:nth-child(2){animation-delay:0.03s;}.card:nth-child(3){animation-delay:0.06s;}.card:nth-child(4){animation-delay:0.09s;}.card:nth-child(5){animation-delay:0.12s;}.card:nth-child(6){animation-delay:0.15s;}.card:nth-child(7){animation-delay:0.18s;}.card:nth-child(8){animation-delay:0.21s;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-hover));opacity:0;transition:opacity 0.3s;}
+.card:hover{border-color:rgba(79,70,229,0.3);box-shadow:var(--shadow-lg),var(--glow-strong);transform:translateY(-3px);}
+.card:hover::before{opacity:1;}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.cname{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-0.3px;}
+.web-badge{font-size:10px;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;font-weight:700;letter-spacing:0.3px;}
+.web-badge.has{background:var(--has-web-bg);color:var(--has-web-color);border:1px solid var(--has-web-border);}
+.web-badge.no{background:var(--no-web-bg);color:var(--no-web-color);border:1px solid var(--no-web-border);}
+.cinfo{font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:10px;font-weight:500;}
+.cinfo span.ci{display:flex;align-items:center;gap:6px;padding:1px 0;}
+.cinfo a{color:var(--accent);text-decoration:none;font-weight:600;transition:color 0.2s;}
+.cinfo a:hover{color:var(--accent-hover);text-decoration:underline;}
+.cactions{display:flex;gap:8px;padding-top:10px;border-top:1.5px solid var(--border);flex-wrap:wrap;}
+.abtn{padding:6px 14px;font-size:11px;border:1.5px solid var(--border);border-radius:7px;text-decoration:none;color:var(--text2);background:transparent;transition:all 0.2s;font-weight:700;display:inline-flex;align-items:center;gap:4px;}
+.abtn:hover{border-color:var(--accent);color:#fff;background:var(--accent);box-shadow:0 4px 12px rgba(79,70,229,0.2);transform:translateY(-1px);}
+.abtn.call{border-color:var(--call-border);color:var(--call-color);background:var(--call-bg);}
+.abtn.call:hover{background:var(--call-color);color:#fff;box-shadow:0 4px 12px rgba(59,130,246,0.2);}
+.abtn.web{border-color:var(--has-web-border);color:var(--has-web-color);background:var(--has-web-bg);}
+.abtn.web:hover{background:#22c55e;color:#fff;border-color:#22c55e;box-shadow:0 4px 12px rgba(34,197,94,0.2);}
+
+/* ===== SUMMARY BOX ===== */
+.summary-box{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow-sm),var(--glow);}
+.summary-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.8px;}
+.summary-stats{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.stat{flex:1;min-width:100px;text-align:center;padding:10px;border-radius:8px;background:var(--bg);border:1px solid var(--border);}
+.stat-num{font-size:22px;font-weight:900;color:var(--text);line-height:1.2;}
+.stat-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.stat.green .stat-num{color:#22c55e;}
+.stat.red .stat-num{color:#ef4444;}
+.summary-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.summary-actions .abtn{flex:1;min-width:120px;justify-content:center;padding:8px 12px;}
+
+.empty{text-align:center;padding:80px 30px;color:var(--text3);font-size:15px;line-height:2;font-weight:500;}
+.empty-icon{font-size:48px;margin-bottom:16px;opacity:0.3;}
+.errbox{text-align:center;padding:60px 30px;}
+.errbox .etitle{font-size:16px;font-weight:800;color:var(--no-web-color);margin-bottom:12px;}
+.errbox .edetail{font-size:13px;color:var(--text2);background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;margin:14px auto;max-width:420px;text-align:left;line-height:1.8;font-weight:500;}
+
+/* ===== DARK MODE GLOW ===== */
+body.dark .card{box-shadow:var(--shadow-sm),var(--glow);}
+body.dark .card:hover{box-shadow:var(--shadow-lg),var(--glow-strong);border-color:rgba(99,102,241,0.4);}
+body.dark .go-btn{box-shadow:0 4px 20px rgba(99,102,241,0.35);}
+body.dark .go-btn:hover{box-shadow:0 8px 32px rgba(99,102,241,0.5);}
+body.dark .ftag.on{box-shadow:0 4px 18px rgba(99,102,241,0.3);}
+body.dark .sc.on{box-shadow:0 2px 12px rgba(99,102,241,0.25);}
+body.dark .spinner{box-shadow:0 0 28px rgba(99,102,241,0.4);}
+body.dark .prog-fill{box-shadow:0 0 16px rgba(99,102,241,0.5);}
+body.dark .dot.scanning{box-shadow:0 0 14px rgba(245,158,11,0.6);}
+body.dark .dot.done{box-shadow:0 0 14px rgba(16,185,129,0.6);}
+body.dark .dot.err{box-shadow:0 0 14px rgba(239,68,68,0.6);}
+body.dark .summary-box{box-shadow:var(--shadow-sm),var(--glow);}
+body.dark .header-icon{box-shadow:0 0 20px rgba(99,102,241,0.35);}
+body.dark .exp-btn:hover{box-shadow:0 4px 20px rgba(99,102,241,0.3);}
+
+@media(max-width:700px){
+  .layout{flex-direction:column;height:auto;}
+  .sidebar{width:100%;min-width:0;border-right:none;border-bottom:1px solid var(--border);}
+  .content{padding:20px 16px;}
+  .splash-title{font-size:28px;}
+  body{overflow:auto;}
+}
+</style>
+</head>
+<body class="dark">
+
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash">
+  <div class="splash-bg">
+    <div class="splash-orb o1"></div>
+    <div class="splash-orb o2"></div>
+    <div class="splash-orb o3"></div>
+  </div>
+  <div class="splash-particles" id="particles"></div>
+  <div class="splash-content">
+    <div class="splash-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+    </div>
+    <div class="splash-title">Welcome to <span>YRB Leads</span></div>
+    <div class="splash-sub">Your lead generation engine &mdash; powered by open data</div>
+    <div class="splash-loader">
+      <div class="splash-bar-track"><div class="splash-bar-fill" id="splashFill"></div></div>
+      <div class="splash-status" id="splashStatus">Initializing...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app">
+
+<div class="header">
+  <div class="header-logo">
+    <div class="header-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+    <h1>YRB Leads<small>Beta</small></h1>
+  </div>
+  <div class="header-right">
+    <span class="header-sub">Free &middot; OpenStreetMap</span>
+    <button class="dark-btn" id="darkBtn" onclick="toggleDark()" title="Toggle theme">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div>
+      <label>Location</label>
+      <input id="loc" type="text" placeholder="e.g. Manchester, UK" />
+    </div>
+    <div class="iw">
+      <label>Industry / Business type</label>
+      <input id="btype" type="text" placeholder="e.g. barber, dentist, plumber..." autocomplete="off" oninput="showSugg()" onblur="hideSugg()" onkeydown="if(event.key==='Enter')doSearch()" />
+      <div class="sugg-box" id="suggBox"></div>
+    </div>
+    <div class="row2">
+      <div>
+        <label>Radius (km)</label>
+        <div class="num-stepper">
+          <button type="button" class="num-btn minus" onclick="stepNum('radius',-1)">&minus;</button>
+          <input id="radius" type="number" value="5" min="1" max="50" />
+          <button type="button" class="num-btn plus" onclick="stepNum('radius',1)">+</button>
+        </div>
+      </div>
+      <div>
+        <label>Max results</label>
+        <div class="num-stepper">
+          <button type="button" class="num-btn minus" onclick="stepNum('maxr',-5)">&minus;</button>
+          <input id="maxr" type="number" value="60" min="5" max="200" />
+          <button type="button" class="num-btn plus" onclick="stepNum('maxr',5)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div>
+      <label>Phone number</label>
+      <div class="ftags">
+        <div class="ftag on" data-f="phone" data-v="any" onclick="setTag(this)">Any</div>
+        <div class="ftag" data-f="phone" data-v="yes" onclick="setTag(this)">Has phone</div>
+      </div>
+    </div>
+    <div>
+      <label>Opening hours</label>
+      <div class="ftags">
+        <div class="ftag on" data-f="hours" data-v="any" onclick="setTag(this)">Any</div>
+        <div class="ftag" data-f="hours" data-v="yes" onclick="setTag(this)">Listed</div>
+      </div>
+    </div>
+    <div>
+      <label>Website</label>
+      <div class="ftags">
+        <div class="ftag on" data-f="website" data-v="any" onclick="setTag(this)">All</div>
+        <div class="ftag" data-f="website" data-v="yes" onclick="setTag(this)">Has site</div>
+        <div class="ftag" data-f="website" data-v="no" onclick="setTag(this)">No site</div>
+      </div>
+    </div>
+    <button class="go-btn" id="goBtn" onclick="doSearch()">&#x1F50D; Search Leads</button>
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-bar"><div class="prog-fill" id="pf"></div></div>
+      <div class="prog-txt" id="pt"></div>
+    </div>
+  </div>
+
+  <div class="content" id="contentArea">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-msg" id="loadingMsg">Searching for businesses...</div>
+      <div class="loading-sub" id="loadingSub"></div>
+    </div>
+    <div class="topbar">
+      <div class="dot" id="dot"></div>
+      <span class="status-txt" id="stxt">Enter a location and business type to begin</span>
+      <div class="tr">
+        <span class="badge" id="badge"></span>
+        <button class="exp-btn" id="expBtn" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </div>
+    <div class="sort-row" id="sortRow">
+      <span>Sort:</span>
+      <span class="sc on" data-s="default" onclick="setSort(this)">Default</span>
+      <span class="sc" data-s="name" onclick="setSort(this)">A&ndash;Z</span>
+      <span class="sc" data-s="phone" onclick="setSort(this)">Has phone</span>
+      <span class="sc" data-s="hours" onclick="setSort(this)">Has hours</span>
+    </div>
+    <div class="cards" id="cards">
+      <div class="empty">
+        <div class="empty-icon">&#x1F50E;</div>
+        Search any location &amp; business type to find leads.<br>
+        100% free &mdash; powered by OpenStreetMap data.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+/* ===== SPLASH SCREEN ANIMATION ===== */
+(function(){
+  var pc=document.getElementById('particles');
+  for(var i=0;i<30;i++){
+    var s=document.createElement('div');s.className='spark';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=(80+Math.random()*40)+'%';
+    s.style.animationDuration=(4+Math.random()*8)+'s';
+    s.style.animationDelay=Math.random()*6+'s';
+    s.style.width=s.style.height=(1+Math.random()*2)+'px';
+    s.style.opacity=0.2+Math.random()*0.4;
+    pc.appendChild(s);
+  }
+  var fill=document.getElementById('splashFill');
+  var status=document.getElementById('splashStatus');
+  var steps=[
+    {p:15,t:'Loading modules...'},
+    {p:35,t:'Preparing search engine...'},
+    {p:55,t:'Initializing map data...'},
+    {p:75,t:'Setting up filters...'},
+    {p:90,t:'Almost ready...'},
+    {p:100,t:'Welcome!'}
+  ];
+  var idx=0;
+  function next(){
+    if(idx>=steps.length){
+      setTimeout(function(){
+        document.getElementById('splash').classList.add('hide');
+        var app=document.getElementById('app');
+        app.style.display='block';
+        document.body.style.overflow='';
+        requestAnimationFrame(function(){app.classList.add('show');});
+      },400);
+      return;
+    }
+    fill.style.width=steps[idx].p+'%';
+    status.textContent=steps[idx].t;
+    idx++;
+    setTimeout(next,500+Math.random()*400);
+  }
+  setTimeout(next,600);
+})();
+
+/* ===== APP STATE ===== */
+var leads=[],leads_with_websites=[],leads_without_websites=[],filters={phone:'any',hours:'any',website:'any'},sortMode='default',dark=true,allLeads=[];
+
+function stepNum(id,delta){
+  var el=document.getElementById(id);
+  var min=parseFloat(el.min)||0,max=parseFloat(el.max)||999;
+  el.value=Math.min(max,Math.max(min,(parseFloat(el.value)||0)+delta));
+}
+
+function toggleDark(){
+  dark=!dark;
+  document.body.classList.toggle('dark',dark);
+  document.getElementById('themeIcon').innerHTML=dark
+    ?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    :'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+
+function setTag(el){
+  document.querySelectorAll('[data-f="'+el.dataset.f+'"]').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');filters[el.dataset.f]=el.dataset.v;
+  if(allLeads.length>0)applyFilters();if(leads.length>0)render();
+}
+function setSort(el){
+  document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');sortMode=el.dataset.s;render();
+}
+function setDot(s){document.getElementById('dot').className='dot'+(s?' '+s:'');}
+function setStatus(t,s){document.getElementById('stxt').textContent=t;setDot(s);}
+function setP(pct,txt){document.getElementById('pf').style.width=pct+'%';document.getElementById('pt').textContent=txt;document.getElementById('loadingSub').textContent=txt;}
+function showLoader(msg){document.getElementById('loadingMsg').textContent=msg||'Searching...';document.getElementById('loadingOverlay').classList.add('show');}
+function hideLoader(){document.getElementById('loadingOverlay').classList.remove('show');}
+
+var IMAP=[
+  {l:['restaurant','restaurants','dining','eatery','bistro','grill','steakhouse'],t:['amenity=restaurant']},
+  {l:['cafe','cafes','coffee','coffee shop','tea','tearoom'],t:['amenity=cafe']},
+  {l:['bar','bars','pub','pubs','nightclub','lounge','tavern','ale house'],t:['amenity=bar','amenity=pub']},
+  {l:['fast food','takeaway','takeaways','kebab','chip shop','chippy','burger','pizza'],t:['amenity=fast_food']},
+  {l:['beauty','beauty salon','nail','nail salon','spa','nails','manicure','pedicure'],t:['shop=beauty','shop=nail_salon']},
+  {l:['hair','hairdresser','hair salon','barber','barbers','barbershop','haircut','salon'],t:['shop=hairdresser','shop=barber']},
+  {l:['gym','gyms','fitness','fitness centre','yoga','pilates','crossfit','weightlifting','dojo','workout'],t:['leisure=fitness_centre']},
+  {l:['plumber','plumbers','plumbing','pipe','plumbing repair'],t:['craft=plumber']},
+  {l:['electrician','electricians','electrical','electrics','wiring','electrical repair'],t:['craft=electrician']},
+  {l:['painter','painters','decorator','decorators','painting','house painter','interior painter'],t:['craft=painter']},
+  {l:['mechanic','mechanics','car repair','garage','mot','auto repair','automotive','transmission','engine'],t:['shop=car_repair','amenity=car_repair']},
+  {l:['dentist','dentists','dental','dentistry','orthodontist','teeth'],t:['amenity=dentist']},
+  {l:['doctor','doctors','gp','clinic','clinics','medical','surgery','physician','general practitioner'],t:['amenity=doctors','amenity=clinic']},
+  {l:['florist','florists','flowers','flower shop','bouquet'],t:['shop=florist']},
+  {l:['clothes','clothing','fashion','boutique','apparel','garments','dress','shirt'],t:['shop=clothes']},
+  {l:['bakery','bakeries','baker','bakers','bread','pastry','croissant'],t:['shop=bakery']},
+  {l:['butcher','butchers','meat','butchery','deli'],t:['shop=butcher']},
+  {l:['pet','pet shop','pet shops','pets','vet','vets','veterinary','animal','dog','cat'],t:['shop=pet','amenity=veterinary']},
+  {l:['hardware','hardware store','diy','tools','building supplies','supplies'],t:['shop=hardware']},
+  {l:['pharmacy','pharmacies','chemist','chemists','apothecary','drugstore','prescription'],t:['amenity=pharmacy']},
+  {l:['accountant','accountants','accounting','cpa','bookkeeper','tax'],t:['office=accountant']},
+  {l:['lawyer','lawyers','solicitor','solicitors','legal','attorney','barrister','law firm'],t:['office=lawyer']},
+  {l:['estate agent','estate agents','letting agent','letting agents','realtor','property','real estate'],t:['office=estate_agent']},
+  {l:['hotel','hotels','guesthouse','guest house','b&b','bed and breakfast','hostel','inn','motel'],t:['tourism=hotel','tourism=guest_house']},
+  {l:['tattoo','tattoos','tattoo studio','piercing','ink','body art'],t:['shop=tattoo']},
+  {l:['optician','opticians','glasses','optometrist','eyewear','contacts','eye care'],t:['shop=optician']},
+  {l:['travel','travel agent','travel agency','tour','tours','vacation'],t:['shop=travel_agency']},
+  {l:['cleaner','cleaners','cleaning','cleaning service','housekeeping','maid','janitorial'],t:['craft=cleaning']},
+  {l:['photographer','photographers','photography','photo studio','portrait'],t:['craft=photographer']},
+  {l:['supermarket','grocer','grocery','convenience','supermarkets','store','market'],t:['shop=supermarket','shop=convenience']},
+  {l:['laundry','laundrette','launderette','dry cleaner','dry cleaning','laundromat','wash'],t:['shop=laundry','shop=dry_cleaning']},
+  {l:['bookstore','bookshop','books','bookkeeper'],t:['shop=books']},
+  {l:['jeweler','jewellery','jewelry','jewellers','watches','diamond'],t:['shop=jewelry']},
+  {l:['mobile','phone','mobile phone','smartphone','carrier','telecom','cellular'],t:['shop=mobile_phone']},
+  {l:['shoe','shoes','footwear','boots','sneakers'],t:['shop=shoes']},
+  {l:['toy','toys','toy shop','games','lego'],t:['shop=toys']},
+  {l:['furniture','furnishings','sofa','bed store','couch','chair'],t:['shop=furniture']},
+  {l:['electronics','electric','electrical goods','appliances','tv','computer'],t:['shop=electronics']},
+  {l:['music','musical','instrument','guitar','drums','piano','violin'],t:['shop=musical_instrument']},
+  {l:['sports','sporting','sporting goods','outdoor','equipment','ski'],t:['shop=sports']},
+  {l:['bicycle','bike','cycling','cycles','mountain bike'],t:['shop=bicycle']},
+  {l:['wine','liquor','alcohol','bottle shop','off license','beer','spirits'],t:['shop=alcohol']},
+  {l:['garden','gardening','nursery','plants','flowers','greenhouse'],t:['shop=garden_centre']},
+  {l:['locksmith','locksmith service','locks','keys'],t:['craft=locksmith']},
+  {l:['carpenter','carpentry','woodworking','joinery','woodworker'],t:['craft=carpenter']},
+  {l:['welding','welder','welders','metal work','fabrication'],t:['craft=metal_construction']},
+  {l:['hvac','heating','cooling','air conditioning','refrigeration','ac repair'],t:['craft=hvac']},
+  {l:['mason','masonry','bricklayer','concrete','stonework','brick'],t:['craft=mason']},
+  {l:['roofer','roofing','roof repair','tiles','shingles'],t:['craft=roofer']},
+  {l:['landscaper','landscaping','landscape','gardener','groundskeeper','lawn care'],t:['craft=gardener']},
+  {l:['consultant','consulting','management','business consultant','consultant services'],t:['office=consultant']},
+  {l:['architect','architecture','building design','architect firm'],t:['office=architect']},
+  {l:['engineer','engineering','engineers','civil engineer'],t:['office=engineer']},
+  {l:['swimming','pool','swim','aquatics','swimming pool'],t:['amenity=swimming_pool']},
+  {l:['bowling','bowling alley'],t:['amenity=bowling_alley']},
+  {l:['theatre','theater','cinema','movie','film'],t:['amenity=cinema']},
+  {l:['museum','museums','gallery','art','exhibition'],t:['tourism=museum']},
+  {l:['bank','banks','banking','credit union','atm','savings'],t:['amenity=bank']},
+  {l:['insurance','insurance agent','auto insurance','health insurance'],t:['office=insurance']},
+  {l:['post office','postal','mail','shipping'],t:['amenity=post_office']},
+  {l:['library','libraries','audiobooks'],t:['amenity=library']},
+  {l:['church','churches','synagogue','mosque','temple','religious','worship'],t:['amenity=place_of_worship']},
+  {l:['car wash','automat','car cleaning','detailing'],t:['amenity=car_wash']},
+  {l:['antique','antiques','vintage','used goods','thrift'],t:['shop=second_hand']},
+  {l:['stationery','office supplies','office','paper'],t:['shop=stationery']},
+  {l:['gift','gift shop','souvenirs','greeting cards'],t:['shop=gift']},
+  {l:['gas station','gas','petrol','fuel','diesel'],t:['amenity=fuel']},
+  {l:['car rental','rental car'],t:['amenity=car_rental']},
+  {l:['taxi','cab','uber','lyft','ride share'],t:['amenity=taxi']},
+  {l:['hospital','emergency','urgent care'],t:['amenity=hospital']},
+  {l:['school','schools','education','tutoring','tutor'],t:['amenity=school']},
+  {l:['driving school','driving instructor','driving lesson'],t:['amenity=driving_school']},
+  {l:['martial arts','karate','judo','boxing','mma'],t:['leisure=fitness_centre']},
+  {l:['golf','golf course','driving range'],t:['leisure=golf_course']},
+  {l:['parking','parking garage','car park'],t:['amenity=parking']},
+  {l:['nursery','childcare','daycare','preschool'],t:['amenity=childcare']},
+  {l:['veterinary','animal hospital','pet clinic','vet clinic'],t:['amenity=veterinary']},
+  {l:['ice cream','icecream','gelato','frozen yogurt'],t:['amenity=ice_cream']},
+  {l:['fabric','textiles','cloth','sewing'],t:['shop=fabric']},
+  {l:['craft','crafts','hobby','art supplies'],t:['shop=art']},
+  {l:['smoking','tobacco','cigar','vape','e-cigarette'],t:['shop=tobacco']},
+  {l:['spa','massage','sauna','wellness'],t:['shop=beauty']},
+  {l:['therapy','therapist','psychologist','counseling'],t:['amenity=doctors']},
+  {l:['chiropractor','chiropractic','spinal'],t:['amenity=clinic']},
+  {l:['salon','hair salon','beauty salon','nail salon'],t:['shop=hairdresser']},
+  {l:['clinic','dental clinic','medical clinic','health clinic'],t:['amenity=clinic']},
+  {l:['shop','retail','store','shopping','boutique'],t:['shop=supermarket']},
+];
+
+function resolveIndustry(input){
+  var lower=input.toLowerCase().trim();
+  for(var i=0;i<IMAP.length;i++){var e=IMAP[i];for(var j=0;j<e.l.length;j++){if(e.l[j]===lower||lower.indexOf(e.l[j])!==-1||e.l[j].indexOf(lower)!==-1)return{tags:e.t,keyword:lower,matched:true};}}
+  return{tags:null,keyword:lower,matched:false};
+}
+function showSugg(){
+  var val=document.getElementById('btype').value.toLowerCase().trim(),box=document.getElementById('suggBox');
+  if(!val){box.style.display='none';return;}
+  var hits=[];IMAP.forEach(function(e){e.l.forEach(function(l){if(l.indexOf(val)!==-1&&hits.indexOf(e.l[0])===-1)hits.push(e.l[0]);});});
+  if(!hits.length){box.style.display='none';return;}
+  box.innerHTML=hits.slice(0,7).map(function(s){return'<div class="sugg-item" onmousedown="pickSugg(\''+s+'\')">'+s+'</div>';}).join('');
+  box.style.display='block';
+}
+function hideSugg(){setTimeout(function(){document.getElementById('suggBox').style.display='none';},160);}
+function pickSugg(v){document.getElementById('btype').value=v;document.getElementById('suggBox').style.display='none';}
+
+async function geocode(q){
+  var r=await fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(q)+'&format=json&limit=1',{headers:{'Accept-Language':'en','User-Agent':'YRBLeads/1.0'}});
+  if(!r.ok)throw new Error('Geocoding failed (HTTP '+r.status+'). Check your connection.');
+  var d=await r.json();if(!d||!d.length)throw new Error('Location "'+q+'" not found. Try adding the country.');
+  return{lat:parseFloat(d[0].lat),lon:parseFloat(d[0].lon)};
+}
+function buildQuery(tags,keyword,lat,lon,rad){
+  var around='around:'+Math.floor(rad)+','+lat+','+lon,query='[out:json][timeout:60];(';
+  if(tags&&Array.isArray(tags)&&tags.length>0)tags.forEach(function(t){var p=t.split('=');if(p.length===2)query+='nwr["'+p[0]+'"="'+p[1]+'"]('+around+');';});
+  if(keyword&&keyword.length>=2)query+='nwr[name~"^'+keyword+'",i]('+around+');';
+  if(!tags||!tags.length)query+='nwr[name]('+around+');';
+  query+=');out center 100;';return query;
+}
+async function queryOverpass(query,attempt){
+  attempt=attempt||1;
+  try{var res=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(query)});
+    if(res.status===429&&attempt<3){await new Promise(function(r){setTimeout(r,3000);});return queryOverpass(query,attempt+1);}
+    if(!res.ok)throw new Error('HTTP'+res.status);return await res.json();
+  }catch(e){if(attempt<2){await new Promise(function(r){setTimeout(r,1500);});return queryOverpass(query,attempt+1);}throw e;}
+}
+
+async function doSearch(){
+  var loc=document.getElementById('loc').value.trim(),btypeRaw=document.getElementById('btype').value.trim();
+  var radiusKm=Math.max(Math.min(parseFloat(document.getElementById('radius').value)||5,50),1);
+  var maxr=Math.min(parseInt(document.getElementById('maxr').value)||100,500);
+  if(!loc){alert('Enter location');return;}if(!btypeRaw){alert('Enter business type');return;}
+  var btn=document.getElementById('goBtn');btn.disabled=true;
+  leads=[];allLeads=[];document.getElementById('cards').innerHTML='';
+  document.getElementById('badge').style.display='none';document.getElementById('expBtn').style.display='none';
+  document.getElementById('sortRow').style.display='none';document.getElementById('progWrap').style.display='block';
+  setStatus('Searching...','scanning');showLoader('Finding location...');setP(10,'Geocoding...');
+  try{
+    var center=await geocode(loc);var resolved=resolveIndustry(btypeRaw);
+    showLoader('Searching for '+btypeRaw+'...');setP(20,'Querying with tags');
+    var allResults=[],seen={},searches=[{r:radiusKm,tags:resolved.tags},{r:radiusKm*1.5,tags:resolved.tags},{r:radiusKm*2,tags:resolved.tags},{r:radiusKm*3,tags:resolved.tags},{r:radiusKm*5,tags:null}];
+    for(var i=0;i<searches.length&&allResults.length<maxr*2;i++){
+      var search=searches[i];setP(25+i*12,'Radius '+Math.floor(search.r)+'km');
+      try{var q=buildQuery(search.tags,btypeRaw,center.lat,center.lon,search.r*1000);var data=await queryOverpass(q);var els=data.elements||[];
+        els.forEach(function(e){if(e.tags&&e.tags.name){var key=(e.tags.name.toLowerCase()+'|'+(e.lat||(e.center&&e.center.lat)||'?')).substring(0,100);if(!seen[key]){seen[key]=true;allResults.push(e);}}});
+        if(allResults.length>=maxr)break;
+      }catch(e){console.log('SEARCH '+(i+1)+' ERR:',e.message);}
+    }
+    setP(90,'Processing results');
+    allLeads=allResults.map(function(e){
+      var phone=e.tags.phone||e.tags['contact:phone']||'',website=e.tags.website||e.tags['contact:website']||e.tags.url||'';
+      var lat=e.lat||(e.center&&e.center.lat),lon=e.lon||(e.center&&e.center.lon);
+      var addr=[e.tags['addr:housenumber'],e.tags['addr:street'],e.tags['addr:city']||e.tags['addr:town'],e.tags['addr:postcode']].filter(Boolean).join(', ');
+      var qe=encodeURIComponent(e.tags.name+(addr?', '+addr:', '+loc));
+      var mapsUrl=(lat&&lon)?'https://www.google.com/maps/search/'+qe+'/@'+lat+','+lon+',17z':'https://www.google.com/maps/search/'+qe;
+      return{name:e.tags.name,phone:phone,addr:addr||'',hours:e.tags.opening_hours||'',website:website,mapsUrl:mapsUrl};
+    });
+    applyFilters();setP(100,'Done');hideLoader();
+    if(leads.length>0){setStatus(leads.length+' leads found','done');document.getElementById('badge').textContent=leads.length;document.getElementById('badge').style.display='inline';document.getElementById('expBtn').style.display='inline';document.getElementById('sortRow').style.display='flex';render();}
+    else{setStatus('No results','done');document.getElementById('cards').innerHTML='<div class="empty"><div class="empty-icon">&#x1F614;</div>No businesses found.<br>Try a different location or business type.</div>';}
+  }catch(err){hideLoader();setStatus('Error','err');document.getElementById('cards').innerHTML='<div class="errbox"><div class="etitle">Something went wrong</div><div class="edetail">'+esc(err.message)+'</div></div>';}
+  btn.disabled=false;setTimeout(function(){document.getElementById('progWrap').style.display='none';},3000);
+}
+
+function applyFilters(){
+  leads=allLeads.filter(function(e){
+    if(filters.phone==='yes'&&!e.phone)return false;if(filters.hours==='yes'&&!e.hours)return false;
+    if(filters.website==='yes'&&(!e.website||e.website.trim()===''))return false;
+    if(filters.website==='no'&&e.website&&e.website.trim()!=='')return false;return true;
+  }).slice(0,500);
+  leads_with_websites=[];leads_without_websites=[];
+  leads.forEach(function(l){if(l.website&&l.website.trim()!=='')leads_with_websites.push(l);else leads_without_websites.push(l);});
+}
+
+function render(){
+  if(!leads.length)return;
+  var sorted=leads.slice();
+  if(sortMode==='name')sorted.sort(function(a,b){return a.name.localeCompare(b.name);});
+  else if(sortMode==='phone')sorted.sort(function(a,b){return(b.phone?1:0)-(a.phone?1:0);});
+  else if(sortMode==='hours')sorted.sort(function(a,b){return(b.hours?1:0)-(a.hours?1:0);});
+
+  var html='<div class="summary-box">';
+  html+='<div class="summary-title">Results Summary</div>';
+  html+='<div class="summary-stats">';
+  html+='<div class="stat"><div class="stat-num">'+leads.length+'</div><div class="stat-label">Total leads</div></div>';
+  html+='<div class="stat green"><div class="stat-num">'+leads_with_websites.length+'</div><div class="stat-label">Has website</div></div>';
+  html+='<div class="stat red"><div class="stat-num">'+leads_without_websites.length+'</div><div class="stat-label">No website</div></div>';
+  html+='</div>';
+  html+='<div class="summary-actions">';
+  html+='<button class="abtn web" onclick="exportCSV(\'with\')">Export With Website</button>';
+  html+='<button class="abtn" onclick="exportCSV(\'without\')" style="border-color:var(--no-web-border);color:var(--no-web-color);background:var(--no-web-bg);">Export No Website</button>';
+  html+='<button class="abtn" onclick="exportCSV(\'all\')">Export All</button>';
+  html+='</div></div>';
+
+  sorted.forEach(function(l){
+    var hasWeb=l.website&&l.website.trim()!=='';
+    var accent=hasWeb?'border-left:3px solid #22c55e;':'border-left:3px solid #ef4444;';
+    html+='<div class="card" style="'+accent+'">';
+    html+='<div class="ctop"><div class="cname">'+esc(l.name)+'</div>';
+    html+='<span class="web-badge '+(hasWeb?'has':'no')+'">'+(hasWeb?'Has website':'No website')+'</span></div>';
+    html+='<div class="cinfo">';
+    if(l.addr)html+='<span class="ci">\uD83D\uDCCD '+esc(l.addr)+'</span>';
+    if(l.phone)html+='<span class="ci">\uD83D\uDCDE <a href="tel:'+esc(l.phone)+'">'+esc(l.phone)+'</a></span>';
+    else html+='<span class="ci" style="color:var(--text4);font-size:12px;">No phone listed</span>';
+    if(l.hours)html+='<span class="ci">\uD83D\uDD50 '+esc(l.hours)+'</span>';
+    if(hasWeb)html+='<span class="ci">\uD83C\uDF10 <a href="'+esc(l.website)+'" target="_blank">'+esc(l.website.substring(0,45))+'</a></span>';
+    html+='</div>';
+    html+='<div class="cactions">';
+    html+='<a href="'+l.mapsUrl+'" target="_blank" class="abtn">\uD83D\uDDFA\uFE0F Maps</a>';
+    if(l.phone)html+='<a href="tel:'+esc(l.phone)+'" class="abtn call">\uD83D\uDCDE Call</a>';
+    if(hasWeb)html+='<a href="'+esc(l.website)+'" target="_blank" class="abtn web">\uD83C\uDF10 Website</a>';
+    html+='</div></div>';
+  });
+  document.getElementById('cards').innerHTML=html;
+}
+
+function exportCSV(type){
+  type=type||'all';var exp=[],fn='leads.csv';
+  if(type==='with'){exp=leads_with_websites;fn='with_websites.csv';}
+  else if(type==='without'){exp=leads_without_websites;fn='without_websites.csv';}
+  else{exp=leads;fn='all_leads.csv';}
+  if(!exp.length){alert('No leads to export');return;}
+  var rows=[['Name','Phone','Address','Hours','Website','Google Maps Link']];
+  exp.forEach(function(l){rows.push([l.name||'',l.phone||'',l.addr||'',l.hours||'',l.website||'[NO WEBSITE]',l.mapsUrl||'']);});
+  var csv=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=fn;a.click();
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>
