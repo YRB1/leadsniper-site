@@ -30,12 +30,6 @@ LeadSniper automates outreach workflows that would normally take hours, allowing
 * CSS3
 * JavaScript (Vanilla JS)
 
-## 📸 Screenshots
-
-<!-- Add your screenshots -->
-
-![App Screenshot](./screenshots/leadsniper.png)
-
 ## 🔗 Live Demo
 
 👉 https://yrb1.github.io/leadsniper-site/
@@ -66,6 +60,6 @@ open index.html
 ## 👤 Author
 
 **Benjamin Mukuza**
-GitHub: https://github.com/yourusername
+GitHub: https://github.com/yrb1
 
 [1]: https://www.leadsniper.xyz/?utm_source=chatgpt.com "LeadSniper | SMS Inbox for Automotive Sales"
